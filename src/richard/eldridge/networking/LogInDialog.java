@@ -2,6 +2,7 @@ package richard.eldridge.networking;
 
 import javax.swing.*;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -12,8 +13,8 @@ import static javax.swing.BoxLayout.Y_AXIS;
 public class LogInDialog extends JDialog {
     private static final long serialVersionUID = 1L;
     private boolean canceled = false;
-    private JTextField ipAddressField = new JTextField("", 2);
-    private JTextField userNameField = new JTextField("", 2);
+    private JTextField ipAddressField = new JTextField(null, 2);
+    private JTextField userNameField = new JTextField(null, 2);
 
     public LogInDialog(String appName) {
         setTitle(appName);
@@ -28,6 +29,7 @@ public class LogInDialog extends JDialog {
         //main panel
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, Y_AXIS));
+        add(mainPanel, BorderLayout.CENTER);
         JLabel ipAddressLabel = new JLabel("IP Address:");
         mainPanel.add(ipAddressLabel);
         mainPanel.add(ipAddressField);
@@ -37,6 +39,7 @@ public class LogInDialog extends JDialog {
 
         //button panel
         JPanel buttonPanel = new JPanel();
+        add(buttonPanel, BorderLayout.PAGE_END);
         JButton okButton = new JButton("OK");
         okButton.addActionListener(new ActionListener() {
             @Override
@@ -44,7 +47,7 @@ public class LogInDialog extends JDialog {
                 ok();
             }
         });
-        mainPanel.add(buttonPanel);
+        buttonPanel.add(okButton);
         JButton cancelButton = new JButton("Cancel");
         cancelButton.addActionListener(new ActionListener() {
             @Override
@@ -52,15 +55,16 @@ public class LogInDialog extends JDialog {
                 cancel();
             }
         });
-        mainPanel.add(cancelButton);
-
+        buttonPanel.add(cancelButton);
+        getRootPane().setDefaultButton(okButton);
         //listeners
         addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosing(WindowEvent event) {
+            public void windowClosing(WindowEvent e) {
                 cancel();
             }
         });
+
     }
 
     private void cancel() {
@@ -71,5 +75,9 @@ public class LogInDialog extends JDialog {
     private void ok() {
         canceled = false;
         setVisible(false);
+    }
+
+    public void login() {
+        setVisible(true);
     }
 }
