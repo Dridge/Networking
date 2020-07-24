@@ -1,20 +1,21 @@
 package richard.eldridge.networking;
 
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.*;
 
 import static javax.swing.BoxLayout.Y_AXIS;
 
 public class LogInDialog extends JDialog {
     private static final long serialVersionUID = 1L;
+    public static final String FILE_NAME = "Login.txt";
     private boolean canceled = false;
-    private JTextField ipAddressField = new JTextField(null, 2);
-    private JTextField userNameField = new JTextField(null, 2);
+    private final JTextField ipAddressField = new JTextField(null, 2);
+    private final JTextField userNameField = new JTextField(null, 2);
 
     public LogInDialog(String appName) {
         setTitle(appName);
@@ -23,6 +24,16 @@ public class LogInDialog extends JDialog {
         pack();
         setLocationRelativeTo(null);
         setResizable(false);
+        try (BufferedReader in = new BufferedReader(new FileReader(new File(FILE_NAME)))) {
+            String ipAddress = in.readLine();
+            ipAddressField.setText(ipAddress);
+            String userName = in.readLine();
+            userNameField.setText(userName);
+        } catch(FileNotFoundException e) {
+            //do nothing
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error when reading from: " + FILE_NAME);
+        }
     }
 
     private void initGUI() {
@@ -73,7 +84,6 @@ public class LogInDialog extends JDialog {
     }
 
     private void ok() {
-        canceled = false;
         if(getIpAddress().isEmpty()) {
             JOptionPane.showMessageDialog(this,
                     "You must enter an IP address.");
@@ -81,6 +91,14 @@ public class LogInDialog extends JDialog {
             JOptionPane.showMessageDialog(this,
                     "You must enter a user name.");
         } else {
+            canceled = false;
+            try (BufferedWriter out = new BufferedWriter(new FileWriter(new File(FILE_NAME)))){
+                out.write(getIpAddress()+"\n");
+                out.write(getUserName());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this,
+                        "Error encountered when writing to: " + FILE_NAME);
+            }
             setVisible(false);
         }
     }
