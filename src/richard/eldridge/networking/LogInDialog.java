@@ -74,10 +74,30 @@ public class LogInDialog extends JDialog {
 
     private void ok() {
         canceled = false;
-        setVisible(false);
+        if(getIpAddress().isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "You must enter an IP address.");
+        } else if(getUserName().isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "You must enter a user name.");
+        } else {
+            setVisible(false);
+        }
     }
 
     public void login() {
         setVisible(true);
+    }
+
+    public boolean isCanceled() {
+        return canceled;
+    }
+
+    public String getIpAddress() {
+        return ipAddressField.getText().trim();
+    }
+
+    public String getUserName() {
+        return userNameField.getText().trim();
     }
 }
