@@ -92,6 +92,7 @@ public class LogInDialog extends JDialog {
                     "You must enter a user name.");
         } else {
             canceled = false;
+            setVisible(false);
             try (BufferedWriter out = new BufferedWriter(new FileWriter(new File(FILE_NAME)))){
                 out.write(getIpAddress()+"\n");
                 out.write(getUserName());
@@ -99,7 +100,6 @@ public class LogInDialog extends JDialog {
                 JOptionPane.showMessageDialog(this,
                         "Error encountered when writing to: " + FILE_NAME);
             }
-            setVisible(false);
         }
     }
 
