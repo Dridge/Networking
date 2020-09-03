@@ -8,3 +8,5 @@
 bin
 # ignore idea files
 .idea
+# log files
+*.log

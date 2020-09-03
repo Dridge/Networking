@@ -12,7 +12,7 @@ import static javax.swing.BoxLayout.Y_AXIS;
 
 public class LogInDialog extends JDialog {
     private static final long serialVersionUID = 1L;
-    public static final String FILE_NAME = "Login.txt";
+    public static final String FILE_NAME = "Login.log";
     private boolean canceled = false;
     private final JTextField ipAddressField = new JTextField(null, 2);
     private final JTextField userNameField = new JTextField(null, 2);
